@@ -16,6 +16,3 @@ go mod download
 go run .
 ```
 
-## Project Structure
-
-To be implemented.

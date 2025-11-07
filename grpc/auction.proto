@@ -1,0 +1,65 @@
+syntax = "proto3";
+option go_package = "distributed-auction-system/grpc/gen";
+
+package auction;
+
+service AuctionService {
+  rpc CreateAuction (CreateAuctionRequest) returns (CreateAuctionResponse);
+  rpc PlaceBid (BidRequest) returns (BidResponse);
+  rpc CloseAuction (CloseAuctionRequest) returns (CloseAuctionResponse);
+  rpc GetAuctionState (GetAuctionStateRequest) returns (GetAuctionStateResponse);
+}
+
+// create auction
+message CreateAuctionRequest {
+  string auction_id = 1;
+  string owner_id = 2;
+  string item = 3;
+  double starting_price = 4;
+  int64 duration = 5;
+}
+
+message CreateAuctionResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+
+// bids
+message BidRequest {
+  string auction_id = 1;
+  string bidder_id = 2;
+  double amount = 3;
+}
+
+message BidResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// closing auctions
+message CloseAuctionRequest {
+  string auction_id = 1;
+  string owner_id = 2;
+}
+
+message CloseAuctionResponse {
+  bool success = 1;
+  string winner_id = 2;
+  double final_price = 3;
+  string message = 4;
+}
+
+// obtaining auction - used for updating local state
+message GetAuctionStateRequest {
+  string auction_id = 1;
+}
+
+message GetAuctionStateResponse {
+  string auction_id = 1;
+  string owner_id = 2;
+  string item = 3;
+  double current_price = 4;
+  string highest_bidder_id = 5;
+  bool is_active = 6;
+}
